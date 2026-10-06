@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoLuxe AI | Used Car Intelligence</title>
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f3ef;
+            color: #242424;
+        }
+
+        /* ---------- NAVBAR ---------- */
+
+        .navbar {
+            background: #171717;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #c9a227;
+        }
+
+        .nav-right {
+            color: #cfcfcf;
+            font-size: 14px;
+        }
+
+
+        /* ---------- HERO ---------- */
+
+        .hero {
+            background:
+                linear-gradient(rgba(20,20,20,0.82), rgba(20,20,20,0.82)),
+                url("https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+            background-position: center;
+
+            padding: 75px 8%;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-tag {
+            color: #d4af37;
+            letter-spacing: 3px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: #d4af37;
+        }
+
+        .hero p {
+            color: #d4d4d4;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+
+        /* ---------- STAT CARDS ---------- */
+
+        .stats {
+            width: 84%;
+            margin: -35px auto 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            position: relative;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-top: 3px solid #c9a227;
+        }
+
+        .stat-number {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* ---------- MAIN ---------- */
+
+        .main {
+            width: 84%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 25px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .panel-title {
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        .panel-subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ---------- FORM ---------- */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fafafa;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #c9a227;
+            background: white;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 23px;
+            border: none;
+            border-radius: 6px;
+            background: #171717;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .predict-btn:hover {
+            background: #c9a227;
+            color: #171717;
+        }
+
+
+        /* ---------- PRICE PANEL ---------- */
+
+        .price-panel {
+            background: #171717;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-panel::after {
+            content: "₹";
+            position: absolute;
+            right: -20px;
+            bottom: -55px;
+            font-size: 180px;
+            color: rgba(255,255,255,0.035);
+            font-weight: bold;
+        }
+
+        .price-label {
+            color: #c9a227;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .price-panel h2 {
+            margin-top: 15px;
+            font-size: 32px;
+        }
+
+        .price-display {
+            margin: 30px 0;
+            padding: 25px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 36px;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .price-note {
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+
+        /* ---------- MODEL INFO ---------- */
+
+        .model-info {
+            border-top: 1px solid #3d3d3d;
+            padding-top: 22px;
+        }
+
+        .model-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .model-row span:first-child {
+            color: #aaa;
+        }
+
+        .model-row span:last-child {
+            font-weight: bold;
+        }
+
+        .score {
+            color: #d4af37 !important;
+        }
+
+
+        /* =========================================================
+           ANALYTICS
+           ========================================================= */
+
+        .analytics {
+            width: 84%;
+            margin: 55px auto 70px;
+        }
+
+        .analytics-header {
+            margin-bottom: 25px;
+        }
+
+        .analytics-header h2 {
+            font-size: 30px;
+        }
+
+        .analytics-header p {
+            color: #777;
+            margin-top: 8px;
+        }
+
+
+        /* ---------- CHART CARD ---------- */
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #c9a227;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+
+            margin-bottom: 25px;
+        }
+
+        .chart-card h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .chart-card p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+
+        /* ---------- PLOTLY CHART ---------- */
+
+        .plotly-chart {
+            width: 100%;
+            height: 500px;
+        }
+
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            background: #171717;
+            color: #999;
+            text-align: center;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: #d4af37;
+        }
+
+
+        /* ---------- RESPONSIVE ---------- */
+
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .plotly-chart {
+                height: 420px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
+
+            .main,
+            .stats,
+            .analytics {
+                width: 92%;
+            }
+
+            .nav-right {
+                display: none;
+            }
+
+            .plotly-chart {
+                height: 350px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Auto<span>Luxe</span> AI
+        </div>
+
+        <div class="nav-right">
+            Used Car Price Intelligence
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-tag">
+                AI-POWERED AUTOMOTIVE ANALYTICS
+            </div>
+
+            <h1>
+                Know the value.<br>
+                <span>Drive the right deal.</span>
+            </h1>
+
+            <p>
+                Predict used-car prices using machine learning
+                and explore market insights through interactive analytics.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                7,399
+            </div>
+
+            <div class="stat-label">
+                USED CARS ANALYZED
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                11
+            </div>
+
+            <div class="stat-label">
+                PREDICTIVE FEATURES
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                89.8%
+            </div>
+
+            <div class="stat-label">
+                MODEL R² SCORE
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                AI
+            </div>
+
+            <div class="stat-label">
+                RANDOM FOREST ENGINE
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= PREDICTION AREA ================= -->
+
+    <main class="main">
+
+
+        <!-- ================= FORM ================= -->
+
+        <section class="panel">
+
+            <h2 class="panel-title">
+                Vehicle Valuation
+            </h2>
+
+            <p class="panel-subtitle">
+                Enter vehicle specifications to estimate its market value.
+            </p>
+
+
+            <form id="predictionForm">
+
+                <div class="form-grid">
+
+
+                    <!-- Manufacturing Year -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Manufacturing Year
+                        </label>
+
+                        <input
+                            type="number"
+                            name="yr_mfr"
+                            placeholder="e.g. 2018"
+                            min="1990"
+                            max="2026"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- Kilometers -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Kilometers Driven
+                        </label>
+
+                        <input
+                            type="number"
+                            name="kms_run"
+                            placeholder="e.g. 45000"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- Fuel Type -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Fuel Type
+                        </label>
+
+                        <select name="fuel_type" required>
+
+                            <option value="">
+                                Select fuel
+                            </option>
+
+                            {% for fuel in fuel_types %}
+
+                                <option value="{{ fuel }}">
+                                    {{ fuel }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Transmission -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Transmission
+                        </label>
+
+                        <select name="transmission" required>
+
+                            <option value="">
+                                Select type
+                            </option>
+
+                            {% for transmission in transmissions %}
+
+                                <option value="{{ transmission }}">
+                                    {{ transmission }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- City -->
+
+                    <div class="form-group">
+
+                        <label>
+                            City
+                        </label>
+
+                        <select name="city" required>
+
+                            <option value="">
+                                Select city
+                            </option>
+
+                            {% for city in cities %}
+
+                                <option value="{{ city }}">
+                                    {{ city }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Body Type -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Body Type
+                        </label>
+
+                        <select name="body_type" required>
+
+                            <option value="">
+                                Select body type
+                            </option>
+
+                            {% for body in body_types %}
+
+                                <option value="{{ body }}">
+                                    {{ body }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Car Make -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Car Make
+                        </label>
+
+                        <select name="make" required>
+
+                            <option value="">
+                                Select make
+                            </option>
+
+                            {% for make in makes %}
+
+                                <option value="{{ make }}">
+                                    {{ make }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Car Model -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Car Model
+                        </label>
+
+                        <input
+                            type="text"
+                            name="model"
+                            placeholder="e.g. Swift"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- Total Owners -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Total Owners
+                        </label>
+
+                        <input
+                            type="number"
+                            name="total_owners"
+                            min="1"
+                            max="10"
+                            placeholder="e.g. 1"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- Car Rating -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Car Rating
+                        </label>
+
+                        <select name="car_rating" required>
+
+                            <option value="">
+                                Select rating
+                            </option>
+
+                            {% for rating in car_ratings %}
+
+                                <option value="{{ rating }}">
+                                    {{ rating }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- Warranty -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Warranty Available
+                        </label>
+
+                        <select name="warranty_avail" required>
+
+                            <option value="">
+                                Select option
+                            </option>
+
+                            <option value="True">
+                                Yes
+                            </option>
+
+                            <option value="False">
+                                No
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- PREDICT BUTTON -->
+
+                <button
+                    class="predict-btn"
+                    type="submit">
+
+                    ✦ ESTIMATE VEHICLE VALUE
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- ================= PREDICTION RESULT ================= -->
+
+        <section class="panel price-panel">
+
+
+            <div class="price-label">
+                AI VALUATION
+            </div>
+
+
+            <h2>
+                Estimated Market Price
+            </h2>
+
+
+            <div class="price-display">
+
+
+                {% if predicted_price is not none %}
+
+                    <div class="price" id="predictedPrice">
+
+                        ₹ {{ "{:,.0f}".format(predicted_price) }}
+
+                    </div>
+
+
+                    <div class="price-note">
+
+                        Estimated using Random Forest Regression
+
+                    </div>
+
+
+                {% else %}
+
+                    <div class="price" id="predictedPrice">
+
+                        ₹ —
+
+                    </div>
+
+
+                    <div class="price-note">
+
+                        Enter vehicle details to generate an estimate
+
+                    </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- MODEL INFORMATION -->
+
+            <div class="model-info">
+
+
+                <div class="model-row">
+
+                    <span>
+                        Model
+                    </span>
+
+                    <span>
+                        Random Forest
+                    </span>
+
+                </div>
+
+
+                <div class="model-row">
+
+                    <span>
+                        R² Performance
+                    </span>
+
+                    <span class="score">
+                        89.8%
+                    </span>
+
+                </div>
+
+
+                <div class="model-row">
+
+                    <span>
+                        Dataset Size
+                    </span>
+
+                    <span>
+                        7,399 Cars
+                    </span>
+
+                </div>
+
+
+                <div class="model-row">
+
+                    <span>
+                        Prediction Type
+                    </span>
+
+                    <span>
+                        Regression
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         MARKET INTELLIGENCE
+         CHARTS ARE NOW DIRECTLY INSIDE THE DASHBOARD
+         ========================================================= -->
+
+    <section class="analytics">
+
+
+        <div class="analytics-header">
+
+            <h2>
+                Market Intelligence
+            </h2>
+
+            <p>
+                Explore patterns discovered from the used-car dataset.
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= PRICE DISTRIBUTION ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                💰 Price Distribution
+            </h3>
+
+            <p>
+                Understand how used-car prices are distributed
+                across the dataset.
+            </p>
+
+            <div
+                id="priceDistributionChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= YEAR VS PRICE ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                📅 Age & Value
+            </h3>
+
+            <p>
+                Analyze the relationship between manufacturing
+                year and resale price.
+            </p>
+
+            <div
+                id="yearPriceChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= FUEL TYPE ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                ⛽ Fuel Insights
+            </h3>
+
+            <p>
+                Compare average prices across different
+                fuel categories.
+            </p>
+
+            <div
+                id="fuelPriceChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= TRANSMISSION ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                ⚙ Transmission
+            </h3>
+
+            <p>
+                Compare average vehicle prices by
+                transmission type.
+            </p>
+
+            <div
+                id="transmissionPriceChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= TOP MAKES ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                🏆 Top Car Makes
+            </h3>
+
+            <p>
+                Discover the highest-valued car manufacturers
+                in the dataset.
+            </p>
+
+            <div
+                id="makePriceChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= ACTUAL VS PREDICTED ================= -->
+
+        <div class="chart-card">
+
+            <h3>
+                🎯 Model Accuracy
+            </h3>
+
+            <p>
+                Compare actual vehicle prices against
+                machine-learning predictions.
+            </p>
+
+            <div
+                id="actualPredictedChart"
+                class="plotly-chart">
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <strong>
+            AutoLuxe AI
+        </strong>
+
+        &nbsp; | &nbsp;
+
+        Used Car Price Prediction & Analytics
+
+        <br>
+        <br>
+
+        Machine Learning • Plotly • Flask
+
+    </footer>
+
+
+
+    <!-- =========================================================
+         PREDICTION API - FRONTEND TO FLASK BACKEND
+         ========================================================= -->
+
+    <script>
+
+        document
+            .getElementById("predictionForm")
+            .addEventListener("submit", async function(event) {
+
+                event.preventDefault();
+
+                const form = event.target;
+
+                const data = {
+                    yr_mfr: form.elements["yr_mfr"].value,
+                    kms_run: form.elements["kms_run"].value,
+                    fuel_type: form.elements["fuel_type"].value,
+                    city: form.elements["city"].value,
+                    body_type: form.elements["body_type"].value,
+                    transmission: form.elements["transmission"].value,
+                    make: form.elements["make"].value,
+                    model: form.elements["model"].value,
+                    total_owners: form.elements["total_owners"].value,
+                    car_rating: form.elements["car_rating"].value,
+                    warranty_avail: form.elements["warranty_avail"].value
+                };
+
+                const priceElement =
+                    document.getElementById("predictedPrice");
+
+                try {
+
+                    priceElement.textContent = "Calculating...";
+
+                    const response = await fetch(
+                        "/api/predict",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(data)
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success) {
+                        throw new Error(
+                            result.message ||
+                            "Prediction failed."
+                        );
+                    }
+
+                    priceElement.textContent =
+                        "₹" +
+                        Number(result.predicted_price)
+                            .toLocaleString("en-IN", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            });
+
+                } catch (error) {
+
+                    console.error(
+                        "Prediction API error:",
+                        error
+                    );
+
+                    priceElement.textContent = "₹ —";
+
+                    alert(
+                        "Unable to generate prediction.\n\n" +
+                        error.message
+                    );
+                }
+
+            });
+
+    </script>
+
+
+    <!-- =========================================================
+         LOAD PLOTLY CHARTS
+         ========================================================= -->
+
+    <script>
+
+        /*
+         * This function reads the existing Plotly HTML file
+         * from the static folder and displays the chart
+         * directly inside this dashboard.
+         */
+
+        function loadPlotlyChart(fileName, elementId) {
+
+            fetch("/static/" + fileName)
+
+                .then(function(response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Could not load " + fileName
+                        );
+
+                    }
+
+                    return response.text();
+
+                })
+
+                .then(function(html) {
+
+                    /*
+                     * Create a temporary HTML document
+                     * from the existing Plotly file.
+                     */
+
+                    const parser = new DOMParser();
+
+                    const doc =
+                        parser.parseFromString(
+                            html,
+                            "text/html"
+                        );
+
+
+                    /*
+                     * Find Plotly's graph container.
+                     */
+
+                    const plotDiv =
+                        doc.querySelector(
+                            ".plotly-graph-div"
+                        );
+
+
+                    if (!plotDiv) {
+
+                        console.error(
+                            "Plotly graph not found in:",
+                            fileName
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Plotly HTML files normally contain
+                     * the graph data inside the script.
+                     *
+                     * Extract the Plotly JSON.
+                     */
+
+                    const scripts =
+                        doc.querySelectorAll("script");
+
+
+                    let plotlyData = null;
+
+
+                    for (let script of scripts) {
+
+                        const text =
+                            script.textContent;
+
+
+                        if (
+                            text.includes(
+                                "Plotly.newPlot"
+                            )
+                        ) {
+
+                            const match =
+                                text.match(
+                                    /Plotly\.newPlot\(([\s\S]*)\);/
+                                );
+
+
+                            if (match) {
+
+                                try {
+
+                                    /*
+                                     * Instead of manually
+                                     * evaluating the entire
+                                     * script, use the existing
+                                     * Plotly HTML page in an
+                                     * iframe fallback.
+                                     */
+
+                                    plotlyData = true;
+
+                                }
+
+                                catch (error) {
+
+                                    console.error(error);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+
+                    /*
+                     * Create an iframe containing the
+                     * existing Plotly chart.
+                     *
+                     * The iframe is displayed directly
+                     * inside the dashboard.
+                     */
+
+                    const iframe =
+                        document.createElement("iframe");
+
+
+                    iframe.src =
+                        "/static/" + fileName;
+
+
+                    iframe.style.width = "100%";
+
+                    iframe.style.height = "500px";
+
+                    iframe.style.border = "none";
+
+                    iframe.style.borderRadius = "8px";
+
+
+                    const container =
+                        document.getElementById(
+                            elementId
+                        );
+
+
+                    container.innerHTML = "";
+
+                    container.appendChild(
+                        iframe
+                    );
+
+                })
+
+                .catch(function(error) {
+
+                    console.error(
+                        "Chart loading error:",
+                        error
+                    );
+
+                });
+
+        }
+
+
+
+        /* =====================================================
+           LOAD ALL SIX EXISTING CHARTS
+           ===================================================== */
+
+        // Price Distribution from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const trace = {
+            x: data.prices,
+            type: "histogram",
+            name: "Car Prices"
+        };
+
+        const layout = {
+            title: "Used Car Price Distribution",
+            xaxis: {
+                title: "Sale Price (₹)"
+            },
+            yaxis: {
+                title: "Number of Cars"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 70,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "priceDistributionChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Analytics API error:", error);
+    });
+
+
+       // Year vs Price from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const trace = {
+            x: data.year,
+            y: data.year_price,
+            type: "scatter",
+            mode: "markers",
+            name: "Car Prices"
+        };
+
+        const layout = {
+            title: "Year vs Used Car Price",
+            xaxis: {
+                title: "Manufacturing Year"
+            },
+            yaxis: {
+                title: "Sale Price (₹)"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 70,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "yearPriceChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Year vs Price API error:", error);
+    });
+
+
+        // Fuel Type vs Price from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const fuelNames = Object.keys(data.fuel_types);
+        const fuelPrices = Object.values(data.fuel_types);
+
+        const trace = {
+            x: fuelNames,
+            y: fuelPrices,
+            type: "bar",
+            name: "Average Price"
+        };
+
+        const layout = {
+            title: "Average Price by Fuel Type",
+            xaxis: {
+                title: "Fuel Type"
+            },
+            yaxis: {
+                title: "Average Sale Price (₹)"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 70,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "fuelPriceChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Fuel Type API error:", error);
+    });
+
+
+        // Transmission vs Price from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const transmissionNames = Object.keys(data.transmissions);
+        const transmissionPrices = Object.values(data.transmissions);
+
+        const trace = {
+            x: transmissionNames,
+            y: transmissionPrices,
+            type: "bar",
+            name: "Average Price"
+        };
+
+        const layout = {
+            title: "Average Price by Transmission",
+            xaxis: {
+                title: "Transmission"
+            },
+            yaxis: {
+                title: "Average Sale Price (₹)"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 70,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "transmissionPriceChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Transmission API error:", error);
+    });
+
+
+        // Top Makes vs Price from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const makeNames = Object.keys(data.top_makes);
+        const makePrices = Object.values(data.top_makes);
+
+        const trace = {
+            x: makeNames,
+            y: makePrices,
+            type: "bar",
+            name: "Average Price"
+        };
+
+        const layout = {
+            title: "Top 10 Makes by Average Price",
+            xaxis: {
+                title: "Car Make"
+            },
+            yaxis: {
+                title: "Average Sale Price (₹)"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 100,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "makePriceChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Top Makes API error:", error);
+    });
+
+
+        // Actual vs Predicted from Flask API
+fetch("/api/analytics")
+    .then(response => response.json())
+    .then(data => {
+
+        const trace = {
+            x: data.actual_prices,
+            y: data.predicted_prices,
+            type: "scatter",
+            mode: "markers",
+            name: "Predictions"
+        };
+
+        const layout = {
+            title: "Actual vs Predicted Car Prices",
+            xaxis: {
+                title: "Actual Price (₹)"
+            },
+            yaxis: {
+                title: "Predicted Price (₹)"
+            },
+            margin: {
+                t: 50,
+                r: 30,
+                b: 70,
+                l: 70
+            }
+        };
+
+        Plotly.newPlot(
+            "actualPredictedChart",
+            [trace],
+            layout,
+            {
+                responsive: true
+            }
+        );
+    })
+    .catch(error => {
+        console.error("Actual vs Predicted API error:", error);
+    });
+
+    </script>
+
+
+</body>
+
+</html>

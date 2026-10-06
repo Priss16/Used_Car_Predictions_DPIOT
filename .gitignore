@@ -1,0 +1,28 @@
+# Python virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build/cache
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Firebase credentials
+autoluxe-ai-firebase-adminsdk-*.json
